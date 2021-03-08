@@ -1,6 +1,6 @@
 # CoreDataStack 
-![Maintenance](https://img.shields.io/maintenance/yes/2021)
-![GitHub issues](https://img.shields.io/github/issues-raw/georgesjamous/CoreDataStack)
+[![Maintenance](https://img.shields.io/maintenance/yes/2021)](https://github.com/georgesjamous/CoreDataStack)
+[![GitHub issues](https://img.shields.io/github/issues-raw/georgesjamous/CoreDataStack)](https://github.com/georgesjamous/CoreDataStack/issues/)
 
 This is a quick implementation of a reusable core data stack helper library.
 
@@ -28,3 +28,9 @@ let context = stack.mainContext // access the main context
 let context = stack.backgroundContext // access the background context
 context.commit() // commits changes up the chain of contexts
 ```
+
+<br>
+
+---
+
+Feel free to open a PR
