@@ -36,19 +36,18 @@ public extension NSManagedObjectContext {
             }
         }
     }
-    /// A _Combine_ implementation of __NSManagedObjectContext.commitChanges__
-    /// - Returns: Result of save operation
+    /// Combine implementation of commit.
+    ///
+    /// This was renamed _commitPublisher_ to prevent collision with throwable commit
     @available(iOS 13.0, *)
-    func commit() -> Future<Void, Error> {
+    func commitPublisher() -> Future<Void, Error> {
         Future { [weak self] promise in
             guard let self = self else { return }
-            self.commit { (result) in
-                switch result {
-                case .failure(let error):
-                    promise(.failure(error))
-                case .success:
-                    promise(.success(Void()))
-                }
+            do {
+                try self.commit()
+                promise(.success(Void()))
+            } catch {
+                promise(.failure(error))
             }
         }
     }
