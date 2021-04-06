@@ -11,6 +11,15 @@ import Combine
 
 public extension NSManagedObjectContext {
     /// Saves this Context and recursively saves all parent contexts up the chain.
+    /// - Throws: Error if any
+    func commit() throws {
+        guard hasChanges else { return }
+        try self.save()
+        if let parentContext = self.parent {
+            try parentContext.commit()
+        }
+    }
+    /// Saves this Context and recursively saves all parent contexts up the chain.
     /// - Parameter completion: Block  called with result
     func commit(completion: @escaping (Result<Void, Error>) -> Void) {
         guard hasChanges else {
@@ -19,15 +28,11 @@ public extension NSManagedObjectContext {
         }
         perform {
             do {
-                try self.save()
+                try self.commit()
+                completion(.success(Void()))
             } catch {
                 completion(.failure(error))
                 return
-            }
-            if let parentContext = self.parent {
-                parentContext.commit(completion: completion)
-            } else {
-                completion(.success(Void()))
             }
         }
     }
